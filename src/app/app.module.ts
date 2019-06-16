@@ -6,6 +6,11 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
+import { AngularFireModule } from '@angular/fire';
+import { environment } from '../environments/environment';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+
 import { MaterialModule } from './material.module';
 import { SignupComponent } from './auth/signup/signup.component';
 import { LoginComponent } from './auth/login/login.component';
@@ -37,9 +42,11 @@ import { TrainingService } from './training/training.service';
     StopTrainingComponent
   ],
   imports: [
-    BrowserModule,AppRoutingModule,FlexLayoutModule,
-    BrowserAnimationsModule,MaterialModule,FormsModule, ReactiveFormsModule
-  
+    BrowserModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,AngularFirestoreModule,
+    AppRoutingModule, FlexLayoutModule,
+    BrowserAnimationsModule, MaterialModule, FormsModule, ReactiveFormsModule 
   ],
   providers: [TrainingService],
   bootstrap: [AppComponent],
