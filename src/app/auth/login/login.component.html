@@ -1,3 +1,20 @@
-<p>
-  login works!
-</p>
+<div  fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1%">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <input matInput placeholder="Email" formControlName="email" required email>
+      <mat-error *ngFor="let validation of validationMessages.email">
+        <mat-error class="error-message" *ngIf="loginForm.get('email').hasError(validation.type) && (loginForm.get('email').dirty || loginForm.get('email').touched)">{{validation.message}}</mat-error>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Password" formControlName="password" required minlength="5">
+      <mat-error *ngFor="let validation of validationMessages.password">
+        <mat-error class="error-message" *ngIf="loginForm.get('password').hasError(validation.type) && (loginForm.get('password').dirty || loginForm.get('password').touched)">{{validation.message}}</mat-error>
+      </mat-error>
+    </mat-form-field><br>
+    <div>
+      <button mat-raised-button [disabled]="loginForm.invalid" color="accent" type="submit">Submit</button>&nbsp;&nbsp;
+      <button mat-raised-button color="warn" (click)="reset()">Reset</button>
+    </div>
+  </form>
+</div> 
