@@ -1,19 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { UIService } from '../../ui.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy{
 
-  constructor(private authService: AuthService, private formBuilder: FormBuilder) { }
+  constructor(private authService: AuthService, private formBuilder: FormBuilder, private uiService: UIService) { }
   loginForm: FormGroup;
   public validationMessages;
+  isLoading = false;
+  private loadingSubs: Subscription;
 
   ngOnInit() {
+    this.loadingSubs = this.uiService.loadingStateChanged.subscribe(res => {
+      this.isLoading = res;
+    });
     this.initializeFormValidationMessages();
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]],
@@ -59,6 +66,12 @@ export class LoginComponent implements OnInit {
         { type: 'pattern', message: 'You must accept terms and conditions' }
       ]
     };
+  }
+
+  ngOnDestroy(){
+    if (this.loadingSubs) {
+      this.loadingSubs.unsubscribe();
+    }
   }
 
 }

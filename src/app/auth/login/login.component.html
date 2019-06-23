@@ -7,14 +7,15 @@
       </mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input matInput placeholder="Password" formControlName="password" required minlength="5">
+      <input matInput placeholder="Password"  type="password" formControlName="password" required minlength="5">
       <mat-error *ngFor="let validation of validationMessages.password">
         <mat-error class="error-message" *ngIf="loginForm.get('password').hasError(validation.type) && (loginForm.get('password').dirty || loginForm.get('password').touched)">{{validation.message}}</mat-error>
       </mat-error>
     </mat-form-field><br>
-    <div>
+    <div *ngIf="!isLoading">
       <button mat-raised-button [disabled]="loginForm.invalid" color="accent" type="submit">Submit</button>&nbsp;&nbsp;
       <button mat-raised-button color="warn" (click)="reset()">Reset</button>
     </div>
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
   </form>
 </div> 
